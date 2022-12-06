@@ -4,14 +4,20 @@
 # https://www.alwaysdata.com/fr/
 # https://python.doctor/page-python-encodage-encode-decode-unicode-ascii-codec-character-accents-probleme-string-utf8
 
-choice = 0
-name = ""
-money = 10
-mise = 0
-propal = 0
-coup = 0
-game_start = False
-level = 1
+from random import randint
+
+choice = 0 # Choix pour naviguer dans le menu
+name = "" # Nom du joueur
+money = 10 # Argent du joueur
+mise = 0 # Ce qu'il mise à chaque partie
+propal = 0 # Les propositions du joueur pour deviner le nombre de Python
+coup = 0 # Nombre de coups réalisé par le joueur
+game_start = False # Variable déterminant si le jeu est lancé
+level = 1 # Niveau de la partie
+
+#  #  #
+#  Affiche le menu
+#  #  #
 
 def print_menu():
   print("""*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n
@@ -24,6 +30,9 @@ def print_menu():
 Python : Que choisis-tu ?
   """)
   
+#  #  #
+#  Affiche les règles
+#  #  #
 
 def print_rules():
   print("*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n")
@@ -50,11 +59,19 @@ def print_rules():
 Python : Que choisis-tu ?
   """)
 
+#  #  #
+#  Affiche l'entete pour une nouvelle partie
+#  #  #
+
 def print_new_game():
   print("""*  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n
                                       - NOUVELLE PARTIE -\n
 *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *\n
   """)
+
+#  #  #
+#  Gestion des mises
+#  #  #
 
 def mise_fn():
   global mise
@@ -80,6 +97,10 @@ def mise_fn():
     while (mise > money or mise > 10 or mise < 0):
       mise = int(input("Le montant saisi n'est pas valide. Entrer SVP un montant entre 1 et 10 € :\n\n"))
       print("")
+
+#  #  #
+#  Gestion des propositions
+#  #  #
 
 def propal_fn(max, python_nb):
   global propal
@@ -119,6 +140,10 @@ def propal_fn(max, python_nb):
     if (coup == max):
       return False
 
+#  #  #
+#  Calculer des gains
+#  #  #
+
 def calc_win(nbr_coup, max_coup):
   global money
   global mise
@@ -140,7 +165,10 @@ def calc_win(nbr_coup, max_coup):
   else:
     money -= mise
     return money
-    
+
+#  #  #
+#  Gestion de la fin d'une partie
+#  #  #
 
 def result_game(result, python_nb, nbr_coup_max):
   global choice
@@ -170,6 +198,10 @@ def result_game(result, python_nb, nbr_coup_max):
     input("Je ne comprends pas votre réponse. Souhaitez-vous continuer la partie ? (O/N)\n\n")
     print("")
 
+#  #  #
+#  Gestion des niveaux
+#  #  #
+
 def level_game(nbr_level):
   python_nb = randint(1, nbr_level * 10)
   nbr_coup_max = nbr_level + (nbr_level + 1)
@@ -194,6 +226,10 @@ def level_game(nbr_level):
       result_game(res, python_nb, nbr_coup_max)
       break
 
+#  #  #
+#  Gestion du jeu
+#  #  #
+
 def game():
   global coup
   global game_start
@@ -208,60 +244,63 @@ def game():
   level_game(level)
   choice = 0
 
+#  #  #
+#  Gestion du joueur
+#  #  #
 
-  
+while True:
+  try:
+    name = str(input("Je suis Python. Quel est votre pseudo ?\n\n"))
+    print("")
 
-# while True:
-#   try:
-#     name = str(input("Je suis Python. Quel est votre pseudo ?\n\n"))
-#     print("")
+    if (name == ""):
+      print("Je n'ai pas bien compris désolé")
+      break
 
-#     if (name == ""):
-#       print("Je n'ai pas bien compris désolé")
-#       break
+    break
+  except:
+    break
 
-#     break
-#   except:
-#     break
+#  #  #
+#  Gestion du menu
+#  #  #
 
-# while True:
-#   if (choice == 0):
-#     print_menu()
-#     try:
-#       choice = int(input())
-#       print("")
+while True:
+  if (choice == 0):
+    print_menu()
+    try:
+      choice = int(input())
+      print("")
 
-#       while (choice == 0 or choice < 0 or choice > 4):
-#         choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 1, 2, 3 ou 4\n\n"))
-#         print("")
-#     except:
-#       while (choice == 0 or choice < 0 or choice > 4):
-#         choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 1, 2, 3 ou 4\n\n"))
-#         print("")
+      while (choice == 0 or choice < 0 or choice > 4):
+        choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 1, 2, 3 ou 4\n\n"))
+        print("")
+    except:
+      while (choice == 0 or choice < 0 or choice > 4):
+        choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 1, 2, 3 ou 4\n\n"))
+        print("")
 
-#   if (choice == 1):
-#     print_rules()
-#     try:
-#       choice = int(input())
-#       print("")
+  if (choice == 1):
+    print_rules()
+    try:
+      choice = int(input())
+      print("")
 
-#       while (choice == 1 or choice < 0 or choice > 4):
-#         choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 0, 2, 3 ou 4\n\n"))
-#         print("")
-#     except:
-#       while (choice == 1 or choice < 0 or choice > 4):
-#         choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 0, 2, 3 ou 4\n\n"))
-#         print("")
+      while (choice == 1 or choice < 0 or choice > 4):
+        choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 0, 2, 3 ou 4\n\n"))
+        print("")
+    except:
+      while (choice == 1 or choice < 0 or choice > 4):
+        choice = int(input("Ce que vous avez saisi n'est pas valide, veuillez saisir 0, 2, 3 ou 4\n\n"))
+        print("")
 
-#   if (choice == 2):
-#     game()
+  if (choice == 2):
+    game()
 
-#   if (choice == 3):
-#     print("LES STATS ICI")
-#     break
+  if (choice == 3):
+    print("LES STATS ICI")
+    break
 
-#   if (choice == 4):
-#     print("A la prochaine " + name + "!")
-#     break
-
-cnx.close()
+  if (choice == 4):
+    print("A la prochaine " + name + "!")
+    break
