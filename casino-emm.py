@@ -5,7 +5,6 @@
 # https://python.doctor/page-python-encodage-encode-decode-unicode-ascii-codec-character-accents-probleme-string-utf8
 
 from random import randint
-import math
 
 choice = 0 # Choix pour naviguer dans le menu
 name = "" # Nom du joueur
