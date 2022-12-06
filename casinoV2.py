@@ -35,7 +35,6 @@ while True :
             affiche_regle()
             break
         elif (regle=='N'):
-            print("Pas de regle")
             break
         else :
             print("La valeur saisie n'est pas correct")
@@ -56,12 +55,12 @@ print("""\t- Je viens de penser à un nombre entre 1 et 10. Devinez lequel ?\n
 	\t\t- de quitter le jeu.\n
 	\t- Dès que vous devinez mon nombre : vous avez le droit de quitter le jeu et de partir avec vos gains OU \n\t\tde continuer le jeu en passant au level supérieur.\n """)
 
-def ramdom():
-    nb_ordi = randrange (1, 11, 1)
+def ramdom(max):
+    nb_ordi = randrange (1, max, 1)
     print('(ORDI)  Mon choix est = ', nb_ordi) 
     return nb_ordi
     
-nb_coup = 0
+# nb_coup = 0
 
 def choix_mise():
     while True:
@@ -75,16 +74,16 @@ def choix_mise():
         except :
           print("\t- Le montant saisi n'est pas valide. Entrer SVP un montant entre 1 et "+str(montant)+" € :  ?\n ")
 mise = choix_mise()
-print("La mise en sortie de la fonction : "+str(mise))
-nb_ordi= ramdom()
+# print("La mise en sortie de la fonction : "+str(mise))
+nb_ordi= ramdom(10)
 
 
-def lev(nombre_max, nbcoups_max, montant): #refléchir pour l'insertion de la bd, voir les tables 
+def lev(nombre_max, nbcoups_max, montant, level): #refléchir pour l'insertion de la bd, voir les tables 
     nb_coup = 0
     while True:
         try:
             nb_choisi = int(input("\t- Entrez SVP votre nombre ? \n"))
-            if(nb_choisi<=nombre_max): #LEV 1
+            if(nb_choisi<=nombre_max):
                 nb_coup += 1
 
                 print("Nombre de coup : "+str(nb_coup))
@@ -100,13 +99,42 @@ def lev(nombre_max, nbcoups_max, montant): #refléchir pour l'insertion de la bd
                     print ('Votre nbre est trop grand')
                 elif nb_choisi < nb_ordi :
                     print ('Votre nbre est trop petit')
+
+
                 else :
-                        print ("Bingo ! Vous avez gagné en {} coup(s) !".format(nb_coup))  #peut être afficher ce message que pour les 2 premier coups
-                        if(nb_coup==1):
-                            montant=  mise*2
-                        elif (nb_coup==3):
-                            montant = montant- mise/2
-                            
+
+                        if(level==1):
+                            if(nb_coup==1):
+                                montant= (montant-mise) + mise*2
+                            elif (nb_coup==3):
+                                montant = montant- mise/2
+                        if(level==2):
+                            if(nb_coup==1):
+                                 montant= (montant-mise) + mise*2
+                            elif(nb_coup==2):
+                                  montant= (montant-mise) + mise*(4/5)
+                            elif(nb_coup==3):
+                                  montant= (montant-mise) + mise*(3/5)
+                            elif(nb_coup==4):
+                                  montant= (montant-mise) + mise*(2/5)
+                            elif(nb_coup==5):
+                                  montant= (montant-mise) + mise*(1/5)
+                        if(level==3):
+                            if(nb_coup==1):
+                                 montant= (montant-mise) + mise*2
+                            elif(nb_coup==2):
+                                  montant= (montant-mise) + mise*(6/7)
+                            elif(nb_coup==3):
+                                  montant= (montant-mise) + mise*(5/7)
+                            elif(nb_coup==4):
+                                  montant= (montant-mise) + mise*(4/7)
+                            elif(nb_coup==5):
+                                  montant= (montant-mise) + mise*(3/7)
+                            elif(nb_coup==6):
+                                  montant= (montant-mise) + mise*(2/7)
+                            elif(nb_coup==7):
+                                  montant= (montant-mise) + mise*(1/7)
+                        print ("Bingo ! Vous avez gagné en {} coup(s) !".format(nb_coup))
                         print("votre nouveau montant : "+ str(montant))
                         return montant
                         break      
@@ -116,7 +144,8 @@ def lev(nombre_max, nbcoups_max, montant): #refléchir pour l'insertion de la bd
             print(err)
             print("La valeur saisie n'est pas correct, veuillez saisir un nombre entre 1 et "+str(nombre_max))  #Lev 1
 
-montant = lev(10,3,montant)  # pour le niv1      lev(nombre_max, nbcoups_max)
+montant = lev(10,3,montant, 1)  # pour le niv1      lev(nombre_max, nbcoups_max)
+print("MONTANT APRES LE LEV1 : "+str(montant))
 
 
 #FIN DE PARTIE 
@@ -127,10 +156,25 @@ while True:
             print("	\t- Super ! Vous passez au Level 2.\n") #Si remporte niv 1  Action... appeler fonction LEV 2 
             print("""\t- Les statistiques du level 1 sont les suivantes : ...
 	              \t- Rappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 20 et\n\t\t vous avez le droit à 5 essais !\n""")
-            nb_ordi=ramdom()
-            choix_mise()
-            lev(20,5,montant)
-            break #pour l'instant 
+            nb_ordi=ramdom(20) #lev2
+            mise= choix_mise()
+            montant = lev(20,5,montant, 2)
+            print("le montant au Level 2 : "+str(montant))
+            while True:
+                try:
+                    new_game = input("\t- Souhaitez-vous continuer la partie (O/N) ?\n")
+                    if(new_game=='O'):
+                        print("	\t- Super ! Vous passez au Level 3.\n") #Si remporte niv 1  Action... appeler fonction LEV 2 
+                        print("""\t- Les statistiques du level 2 sont les suivantes : ...
+                            \t- Rappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 30 et\n\t\t vous avez le droit à 7 essais !\n""")
+                        nb_ordi=ramdom(30) #lev2
+                        mise= choix_mise()
+                        montant = lev(30,7,montant, 3)
+                        print("le montant au Level 3 : "+str(montant))
+                        break
+                except:
+                      print("\t- Je ne comprends pas votre réponse. Souhaitez-vous continuer la partie (O/N) ?\n")
+             
 
         if(new_game=='N'):
             print("\t- Au revoir ! Vous finissez la partie avec "+str(montant)+" €.\n ")
@@ -142,18 +186,9 @@ while True:
 
 
 
-        # print("\t- Entrez votre mise : ?\n")
-
-
 
 #LVL2 : 3COUPS *2 1 1/2
 #LVL2 : 5COUPS 4/5 3/5 2/5 
-
-
-
-# def choix_montant():
-#     print("choisir le montant... mettre le code au dessus")
-
 
 
 
