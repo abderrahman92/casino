@@ -8,7 +8,7 @@
 # modifier la mise
 #Faire une variable lev qui détermine le nombre d'essaie et le nombre maximum
 #supprimer les breaks inutiles des fonctions
-#SI LE MONTANT EST NULL NE PAS POUVOIR CONTINUER 
+#SI LE solde EST NULL NE PAS POUVOIR CONTINUER 
 
 from random import randrange
 
@@ -41,9 +41,10 @@ while True :
     except:
         print("La valeur saisie n'est pas correct")
 
-pseudo= input("\t- Je suis Python. Quel est votre pseudo ? \n")
-montant= 10 #valeur par défault d'un nouveau joueur, faire requete SQL
-print("\t- Hello "+pseudo+", vous avez "+ str(montant)+" €, Très bien ! Installez vous SVP à la table de pari.\n\t\t\t Je vous expliquerai le principe du jeu : \n")
+name_user= input("\t- Je suis Python. Quel est votre pseudo ? \n")
+dotation=10
+solde= dotation #valeur par défault d'un nouveau joueur, faire requete SQL
+print("\t- Hello "+name_user+", vous avez "+ str(dotation)+" €, Très bien ! Installez vous SVP à la table de pari.\n\t\t\t Je vous expliquerai le principe du jeu : \n")
 print("""\t- Je viens de penser à un nombre entre 1 et 10. Devinez lequel ?\n
 \t- Att : vous avez le droit à trois essais !\n
 	\t- Si vous devinez mon nombre dès le premier coup, vous gagnez le double de votre mise !\n
@@ -56,9 +57,9 @@ print("""\t- Je viens de penser à un nombre entre 1 et 10. Devinez lequel ?\n
 	\t- Dès que vous devinez mon nombre : vous avez le droit de quitter le jeu et de partir avec vos gains OU \n\t\tde continuer le jeu en passant au level supérieur.\n """)
 
 def ramdom(max):
-    nb_ordi = randrange (1, max, 1)
-    print('(ORDI)  Mon choix est = ', nb_ordi) 
-    return nb_ordi
+    nb_python = randrange (1, max, 1)
+    print('(ORDI)  Mon choix est = ', nb_python) 
+    return nb_python
     
 # nb_coup = 0
 
@@ -66,77 +67,75 @@ def choix_mise():
     while True:
         try : 
             mise = int(input("\t- Le jeu commence, entrez votre mise : ?\n """))
-            if (mise<=montant):
+            if (mise<=solde):
                 return mise       
                 break
             else : 
-                print("\t- Le montant saisi n'est pas valide. Entrer SVP un montant entre 1 et "+str(montant)+" € :  ?\n ")
+                print("\t- Le solde saisi n'est pas valide. Entrer SVP un solde entre 1 et "+str(solde)+" € :  ?\n ")
         except :
-          print("\t- Le montant saisi n'est pas valide. Entrer SVP un montant entre 1 et "+str(montant)+" € :  ?\n ")
+          print("\t- Le solde saisi n'est pas valide. Entrer SVP un solde entre 1 et "+str(solde)+" € :  ?\n ")
 mise = choix_mise()
 # print("La mise en sortie de la fonction : "+str(mise))
-nb_ordi= ramdom(10)
+nb_python= ramdom(10)
 
 
-def lev(nombre_max, nbcoups_max, montant, level): #refléchir pour l'insertion de la bd, voir les tables 
+def lev(nombre_max, nbcoups_max, solde, level): #refléchir pour l'insertion de la bd, voir les tables 
     nb_coup = 0
     while True:
         try:
-            nb_choisi = int(input("\t- Entrez SVP votre nombre ? \n"))
-            if(nb_choisi<=nombre_max):
+            nb_user  = int(input("\t- Entrez SVP votre nombre ? \n"))
+            if(nb_user <=nombre_max):
                 nb_coup += 1
 
                 print("Nombre de coup : "+str(nb_coup))
-                if ((nb_coup==nbcoups_max) and (nb_choisi != nb_ordi)):
-                    print("\t- Vous avez perdu ! Mon nombre est "+ str(nb_ordi)+" !\n")
-                    montant -= mise
-                    print("votre nouveau montant : "+ str(montant))
-                    return montant
+                if ((nb_coup==nbcoups_max) and (nb_user  != nb_python)):
+                    print("\t- Vous avez perdu ! Mon nombre est "+ str(nb_python)+" !\n")
+                    solde -= mise
+                    print("votre nouveau solde : "+ str(round(solde,2))+" €")
+                    return solde
                     break
 
                 if(nb_coup==(nbcoups_max-1)): print("\t- Il vous reste une chance !\n ")
-                if nb_choisi > nb_ordi :
+                if nb_user  > nb_python :
                     print ('Votre nbre est trop grand')
-                elif nb_choisi < nb_ordi :
+                elif nb_user  < nb_python :
                     print ('Votre nbre est trop petit')
 
-
                 else :
-
                         if(level==1):
                             if(nb_coup==1):
-                                montant= (montant-mise) + mise*2
+                                solde= (solde-mise) + mise*2
                             elif (nb_coup==3):
-                                montant = montant- mise/2
+                                solde = solde- mise/2
                         if(level==2):
                             if(nb_coup==1):
-                                 montant= (montant-mise) + mise*2
+                                 solde= (solde-mise) + mise*2
                             elif(nb_coup==2):
-                                  montant= (montant-mise) + mise*(4/5)
+                                  solde= (solde-mise) + mise*(4/5)      
                             elif(nb_coup==3):
-                                  montant= (montant-mise) + mise*(3/5)
+                                  solde= (solde-mise) + mise*(3/5)
                             elif(nb_coup==4):
-                                  montant= (montant-mise) + mise*(2/5)
+                                  solde= (solde-mise) + mise*(2/5)
                             elif(nb_coup==5):
-                                  montant= (montant-mise) + mise*(1/5)
+                                  solde= (solde-mise) + mise*(1/5)
                         if(level==3):
                             if(nb_coup==1):
-                                 montant= (montant-mise) + mise*2
+                                 solde= (solde-mise) + mise*2
                             elif(nb_coup==2):
-                                  montant= (montant-mise) + mise*(6/7)
+                                  solde= (solde-mise) + mise*(6/7)
                             elif(nb_coup==3):
-                                  montant= (montant-mise) + mise*(5/7)
+                                  solde= (solde-mise) + mise*(5/7)
                             elif(nb_coup==4):
-                                  montant= (montant-mise) + mise*(4/7)
+                                  solde= (solde-mise) + mise*(4/7)
                             elif(nb_coup==5):
-                                  montant= (montant-mise) + mise*(3/7)
+                                  solde= (solde-mise) + mise*(3/7)
                             elif(nb_coup==6):
-                                  montant= (montant-mise) + mise*(2/7)
+                                  solde= (solde-mise) + mise*(2/7)
                             elif(nb_coup==7):
-                                  montant= (montant-mise) + mise*(1/7)
+                                  solde= (solde-mise) + mise*(1/7)
                         print ("Bingo ! Vous avez gagné en {} coup(s) !".format(nb_coup))
-                        print("votre nouveau montant : "+ str(montant))
-                        return montant
+                        print("votre nouveau solde : "+ str(round(solde,2))+" €" )
+                        return solde
                         break      
             else :
                 print("La valeur saisie n'est pas correct, veuillez saisir un nombre entre 1 et "+str(nombre_max))
@@ -144,8 +143,7 @@ def lev(nombre_max, nbcoups_max, montant, level): #refléchir pour l'insertion d
             print(err)
             print("La valeur saisie n'est pas correct, veuillez saisir un nombre entre 1 et "+str(nombre_max))  #Lev 1
 
-montant = lev(10,3,montant, 1)  # pour le niv1      lev(nombre_max, nbcoups_max)
-print("MONTANT APRES LE LEV1 : "+str(montant))
+solde = lev(10,3,solde, 1)  # pour le niv1
 
 
 #FIN DE PARTIE 
@@ -156,10 +154,9 @@ while True:
             print("	\t- Super ! Vous passez au Level 2.\n") #Si remporte niv 1  Action... appeler fonction LEV 2 
             print("""\t- Les statistiques du level 1 sont les suivantes : ...
 	              \t- Rappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 20 et\n\t\t vous avez le droit à 5 essais !\n""")
-            nb_ordi=ramdom(20) #lev2
+            nb_python=ramdom(20) #lev2
             mise= choix_mise()
-            montant = lev(20,5,montant, 2)
-            print("le montant au Level 2 : "+str(montant))
+            solde = lev(20,5,solde, 2)
             while True:
                 try:
                     new_game = input("\t- Souhaitez-vous continuer la partie (O/N) ?\n")
@@ -167,17 +164,22 @@ while True:
                         print("	\t- Super ! Vous passez au Level 3.\n") #Si remporte niv 1  Action... appeler fonction LEV 2 
                         print("""\t- Les statistiques du level 2 sont les suivantes : ...
                             \t- Rappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 30 et\n\t\t vous avez le droit à 7 essais !\n""")
-                        nb_ordi=ramdom(30) #lev2
+                        nb_python=ramdom(30) #lev2
                         mise= choix_mise()
-                        montant = lev(30,7,montant, 3)
-                        print("le montant au Level 3 : "+str(montant))
+                        solde = lev(30,7,solde, 3)
+                        print("\t- Au revoir ! Vous finissez la partie avec "+str(round(solde,2))+" €.\n ")
+                        break
+
+                    if(new_game=='N'):
+                        print("\t- Au revoir ! Vous finissez la partie avec "+str(round(solde,2))+" €.\n ")
                         break
                 except:
-                      print("\t- Je ne comprends pas votre réponse. Souhaitez-vous continuer la partie (O/N) ?\n")
+                      print("\t- Je ne comprends pas votre réponse. Souhaitez-vous continuer la partie (O/N) ?\n")     
+            break
              
 
         if(new_game=='N'):
-            print("\t- Au revoir ! Vous finissez la partie avec "+str(montant)+" €.\n ")
+            print("\t- Au revoir ! Vous finissez la partie avec "+str(round(solde,2))+" €.\n ")
             break
         else:
             print("\t- Je ne comprends pas votre réponse. Souhaitez-vous continuer la partie (O/N) ?\n")    
