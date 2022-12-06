@@ -5,6 +5,7 @@
 # https://python.doctor/page-python-encodage-encode-decode-unicode-ascii-codec-character-accents-probleme-string-utf8
 
 from random import randint
+import math
 
 choice = 0 # Choix pour naviguer dans le menu
 name = "" # Nom du joueur
@@ -149,22 +150,22 @@ def calc_win(nbr_coup, max_coup):
   global mise
 
   if (nbr_coup == 1):
-    money += mise * 2
-    return mise * 2
+    money += round(mise * 2, 2)
+    return round(mise * 2, 2)
   elif (nbr_coup == 2):
-    money += mise
-    return mise
+    money += round(mise, 2)
+    return round(mise, 2)
   elif (nbr_coup == 3 and level == 1):
-    money += mise / 2
-    return mise / 2
+    money += round(mise / 2, 2)
+    return round(mise / 2, 2)
   elif (nbr_coup >= 3 and nbr_coup <= max_coup and level > 1):
     for i in range(1, max_coup - 1):
       if (i + 2 == nbr_coup):
-        money += mise * ((max_coup - i) / max_coup)
-        return mise * ((max_coup - i) / max_coup)
+        money += round(mise * ((max_coup - i) / max_coup), 2)
+        return round(mise * ((max_coup - i) / max_coup), 2)
   else:
-    money -= mise
-    return money
+    money -= round(mise, 2)
+    return round(money, 2)
 
 #  #  #
 #  Gestion de la fin d'une partie
